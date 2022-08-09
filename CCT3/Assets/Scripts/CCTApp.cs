@@ -16,5 +16,20 @@ public class CCTApp : MonoBehaviour
 	void Update()
 	{
 		mSugarSystem.Update();
+
+		mSugarSystem.SetWind(new Vector3(Mathf.Sin(Time.fixedTime * 0.5f) * 5.5f, 2.5f, 0.0f) );
+
+		if (Input.GetKeyDown(KeyCode.S)) {
+			Debug.Log("Start spawning");
+			StartPressed();
+		}
+	}
+
+	void StartPressed() {
+		mSugarSystem.StartSpawningRamp();
+	}
+
+	void StopPressed() {
+	
 	}
 }
