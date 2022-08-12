@@ -134,6 +134,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: SugarParticle
       objectReference: {fileID: 0}
+    - target: {fileID: 8539992380678999146, guid: dd5f57389804e6d4686427832392d85a, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8539992380678999150, guid: dd5f57389804e6d4686427832392d85a, type: 3}
       propertyPath: m_RootOrder
       value: 1

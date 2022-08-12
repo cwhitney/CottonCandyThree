@@ -6,6 +6,8 @@ public class SugarParticle : MonoBehaviour {
 
 	public Texture2D[] textureList;
 	public bool isAlive = false;
+	public GameObject particlePlane;
+	public GameObject explodeSpriteGo;
 
 	Vector3		pos = new Vector3(0,0);
 	float		scale = 1.0f;
@@ -29,6 +31,10 @@ public class SugarParticle : MonoBehaviour {
 	// Start is called before the first frame update
 	void Awake() {
 		this.gameObject.SetActive(false);
+		this.explodeSpriteGo.SetActive(false);
+
+		// Listen to when the explode animation completes. Because of how Animator's work, we needed to relay the event from an Action
+		explodeSpriteGo.GetComponent<ExplodeEventRelay>().ExplodeCompleted += OnExplodeFinish;
 	}
 
 	public void Spawn(bool isPersistent = false) {
@@ -43,20 +49,38 @@ public class SugarParticle : MonoBehaviour {
 			pos = new Vector3(Random.Range(minX, maxX), minY+1, 0f);	// start offscreen
 		}
 
-		//velocity = accel;
 		scale = mass * 1.0f;	
 
-	//	Debug.Log("SCALE: " + scale);
-
 		int rnd = Random.Range(0, textureList.Length);
-		this.GetComponent<Renderer>().material.SetTexture("_MainTex", textureList[rnd]);
+		particlePlane.GetComponent<Renderer>().material.SetTexture("_MainTex", textureList[rnd]);
 
 		this.transform.localScale = new Vector3(scale, scale, scale);
 		this.transform.position = pos;
-		this.GetComponent<Renderer>().enabled = true;
+		particlePlane.GetComponent<Renderer>().enabled = true;
 		this.gameObject.SetActive(true);
 
 		// TODO: Rotation
+
+		StartCoroutine(WaitExplode());
+	}
+
+	public IEnumerator WaitExplode() {
+		yield return new WaitForSeconds(3);
+		Explode();
+	}
+
+	void Explode() {
+		particlePlane.SetActive(false);
+		explodeSpriteGo.SetActive(true);
+
+		explodeSpriteGo.GetComponent<Animator>().Play("SugarExplodeAnim");
+	}
+
+	public void OnExplodeFinish() {
+		Debug.Log("Explode finish!");
+
+		particlePlane.SetActive(true);
+		explodeSpriteGo.SetActive(false);
 	}
 
 	public void UpdatePos(Vector3 wind) {
