@@ -46,7 +46,8 @@ public class SugarParticle : MonoBehaviour {
 		if (bPersistent) {
 			pos = new Vector3(Random.Range(minX, maxX), Random.Range(minY, maxY), 0f);
 		} else {
-			pos = new Vector3(Random.Range(minX, maxX), minY+1, 0f);	// start offscreen
+			pos = new Vector3(Random.Range(minX, maxX), minY+1, 0f);    // start offscreen
+			explodeTime = Random.Range(2.0f, 4.0f);
 		}
 
 		scale = mass * 1.0f;	
@@ -61,11 +62,14 @@ public class SugarParticle : MonoBehaviour {
 
 		// TODO: Rotation
 
-		StartCoroutine(WaitExplode());
+		//StartCoroutine(WaitExplode());
+		if(this.bPersistent == false) {
+			StartCoroutine(WaitExplode(explodeTime));
+		}
 	}
 
-	public IEnumerator WaitExplode() {
-		yield return new WaitForSeconds(3);
+	public IEnumerator WaitExplode(float secsUntilExplode) {
+		yield return new WaitForSeconds(secsUntilExplode);
 		Explode();
 	}
 
@@ -77,10 +81,11 @@ public class SugarParticle : MonoBehaviour {
 	}
 
 	public void OnExplodeFinish() {
-		Debug.Log("Explode finish!");
+		//Debug.Log("Explode finish!");
 
-		particlePlane.SetActive(true);
+		particlePlane.SetActive(false);
 		explodeSpriteGo.SetActive(false);
+		this.isAlive = false;
 	}
 
 	public void UpdatePos(Vector3 wind) {

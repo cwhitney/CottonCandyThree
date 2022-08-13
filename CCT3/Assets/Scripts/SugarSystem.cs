@@ -43,7 +43,7 @@ public class SugarSystem : MonoBehaviour
 			//        console() << "Ramp :: " << (normE * mRampMax) << " / " << norm * 100.0 << endl;
 			mSpawnEvery = lmap(normE, 0.0f, 1.0f, STIR_SPAWN_SPEED, 0.03f);
 
-			Debug.Log("Ramping up:" + norm + " :: " + mSpawnEvery);
+			//Debug.Log("Ramping up:" + norm + " :: " + mSpawnEvery);
 		}
 
 		// Update Live Particles
@@ -54,7 +54,7 @@ public class SugarSystem : MonoBehaviour
 				sp.UpdatePos(windSpeed);
 			}
 			else if(mNumToSpawn > 0) {
-				sp.Spawn();
+				sp.Spawn(false);
 
 				mNumToSpawn--;
 			}
