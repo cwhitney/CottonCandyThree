@@ -9,7 +9,7 @@ public class SugarSystem : MonoBehaviour
 	public int mNumToSpawn = 0;
 
 	public const int MAX_PARTICLES = 5000;
-	public const int INITIAL_PARTICLES = 120;
+	public const int INITIAL_PARTICLES = 80;
 	public const float STIR_SPAWN_SPEED = 0.1f;
 
 	float mRampStartTime = 0.0f;
@@ -25,7 +25,7 @@ public class SugarSystem : MonoBehaviour
 
 		// Make a pool of all particles
 		for (int i=0; i< MAX_PARTICLES; i++) {
-			mParticlePool[i] = Instantiate( Resources.Load("SugarParticle"), new Vector3(0, 0, 0), Quaternion.Euler(-90f,0,0) ) as GameObject;
+			mParticlePool[i] = Instantiate( Resources.Load("SugarParticle"), new Vector3(0, 0, 0), Quaternion.Euler(0,0,0) ) as GameObject;
 		}
 
 		// Spawn all the ambient particles

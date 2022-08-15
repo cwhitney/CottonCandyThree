@@ -20,12 +20,14 @@ public class SugarParticle : MonoBehaviour {
 	float		rotationalVel = 0.01f;
 	float		explodeTime = 0.0f;
 
-	float minX = 1920f * -0.5f;
-	float maxX = 1920f * 0.5f;
-	float minY = 1080f * -0.5f;
-	float maxY = 1080f * 0.5f;
+	const float edgeBuf = 100f;
 
-	const float minMass = 3.0f;
+	float minX = 1920f * -0.5f - edgeBuf;
+	float maxX = 1920f * 0.5f + edgeBuf;
+	float minY = 1080f * -0.5f - edgeBuf;
+	float maxY = 1080f * 0.5f + edgeBuf;
+
+	const float minMass = 5.0f;
 	const float maxMass = 10.0f;
 
 	// Start is called before the first frame update
@@ -40,8 +42,11 @@ public class SugarParticle : MonoBehaviour {
 	public void Spawn(bool isPersistent = false) {
 		isAlive = true;
 		mass = Random.Range(minMass, maxMass);
-		accel = new Vector3(0.0f, Random.Range(-30, -65), 0.0f) / mass;
+		accel = new Vector3(0.0f, Random.Range(30, 65), 0.0f) / mass;
+		velocity = accel;
+
 		bPersistent = isPersistent;
+		rotationalVel = Random.Range(-0.007f, 0.007f);
 
 		if (bPersistent) {
 			pos = new Vector3(Random.Range(minX, maxX), Random.Range(minY, maxY), 0f);
@@ -50,19 +55,20 @@ public class SugarParticle : MonoBehaviour {
 			explodeTime = Random.Range(2.0f, 4.0f);
 		}
 
-		scale = mass * 1.0f;	
+		scale = mass * 1.0f;
+		rotation = Random.Range(0.0f, Mathf.PI * 2.0f);
 
 		int rnd = Random.Range(0, textureList.Length);
 		particlePlane.GetComponent<Renderer>().material.SetTexture("_MainTex", textureList[rnd]);
 
 		this.transform.localScale = new Vector3(scale, scale, scale);
 		this.transform.position = pos;
-		particlePlane.GetComponent<Renderer>().enabled = true;
+		//particlePlane.GetComponent<Renderer>().enabled = true;
+
+		particlePlane.SetActive(true);
+		explodeSpriteGo.SetActive(false);
 		this.gameObject.SetActive(true);
 
-		// TODO: Rotation
-
-		//StartCoroutine(WaitExplode());
 		if(this.bPersistent == false) {
 			StartCoroutine(WaitExplode(explodeTime));
 		}
@@ -93,9 +99,17 @@ public class SugarParticle : MonoBehaviour {
 			return;
 		}
 
+
+		//Debug.Log("Velocity" + velocity);
+
 		accel = wind / mass;
 		pos += velocity + accel;
-		//velocity *= 0.97f;
+		velocity *= (1.0f - Time.deltaTime);
+		//velocity *= 0.97f * Time.deltaTime;
+		rotation += rotationalVel;
+
+		
+
 
 		// Wrap persistent particles
 		if (bPersistent) {
@@ -121,5 +135,7 @@ public class SugarParticle : MonoBehaviour {
 		}
 
 		this.transform.position = pos;
+		this.transform.rotation = Quaternion.Euler(0,0, rotation * 180.0f / 3.1415926f);
+		//this.transform.rotation = Quaternion.Euler(0,0,0);
 	}
 }

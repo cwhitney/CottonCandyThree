@@ -17,7 +17,8 @@ public class CCTApp : MonoBehaviour
 
 	// Update is called once per frame
 	void Update() {
-		mSugarSystem.SetWind(new Vector3(Mathf.Sin(Time.fixedTime * 0.5f) * 5.5f, 2.5f, 0.0f));
+		mSugarSystem.SetWind(new Vector3(Mathf.Sin(Time.fixedTime * 0.5f) * 5.0f, 2.29f, 0.0f));	// max wind speed 20.0
+		//mSugarSystem.SetWind(new Vector3(0, 2.29f, 0.0f));	// max wind speed 20.0
 		mSugarSystem.Update();
 
 		if (Input.GetKeyDown(KeyCode.S)) {
