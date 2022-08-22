@@ -12,6 +12,8 @@ public class SugarSystem : MonoBehaviour
 	public const int INITIAL_PARTICLES = 80;
 	public const float STIR_SPAWN_SPEED = 0.1f;
 
+	AudioManager mAudioManager;
+
 	float mRampStartTime = 0.0f;
 	bool bRampingUp = false;
 	bool bExplodeOnly = false;
@@ -22,6 +24,8 @@ public class SugarSystem : MonoBehaviour
 
 	public void Setup() {
 		mParticlePool = new GameObject[MAX_PARTICLES];
+		mAudioManager = GameObject.FindObjectOfType<AudioManager>();
+		mAudioManager.Play("CCT_idle", true, true);
 
 		// Make a pool of all particles
 		for (int i=0; i< MAX_PARTICLES; i++) {
@@ -42,8 +46,6 @@ public class SugarSystem : MonoBehaviour
 			float normE = Mathf.Pow(norm, 0.3f);
 			//        console() << "Ramp :: " << (normE * mRampMax) << " / " << norm * 100.0 << endl;
 			mSpawnEvery = lmap(normE, 0.0f, 1.0f, STIR_SPAWN_SPEED, 0.03f);
-
-			//Debug.Log("Ramping up:" + norm + " :: " + mSpawnEvery);
 		}
 
 		// Update Live Particles
@@ -73,6 +75,9 @@ public class SugarSystem : MonoBehaviour
 		mRampStartTime = Time.fixedTime;
 		bRampingUp = true;
 		bExplodeOnly = false;
+
+		mAudioManager.Play("CCT_song", true);
+		mAudioManager.Stop("CCT_idle", true);
 	}
 
 	public void StopSpawning() {
@@ -80,6 +85,16 @@ public class SugarSystem : MonoBehaviour
 		mSpawnNext = 0.0f;
 		bRampingUp = false;
 		bExplodeOnly = true;
+
+		float elapsed = Time.fixedTime - mRampStartTime;
+		if (elapsed < 40.0) {   // play the ending sting, then go back to idle
+			mAudioManager.Stop("CCT_song", true);
+			mAudioManager.Play("CCT_endingblaster", false, false);
+			mAudioManager.Play("CCT_idle", true, true);
+		} else {
+			mAudioManager.Stop("CCT_song", true);
+			mAudioManager.Play("CCT_idle", true, true);
+		}
 	}
 
 	public void SetWind(Vector3 wind) {
