@@ -229,6 +229,7 @@ GameObject:
   - component: {fileID: 963194227}
   - component: {fileID: 963194226}
   - component: {fileID: 963194229}
+  - component: {fileID: 963194230}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -315,6 +316,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mAudioManager: {fileID: 1227293387}
+  mInputManager: {fileID: 963194230}
+--- !u!114 &963194230
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 963194225}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 92b6274f93e99e146b609c0c018472e0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1227293386
 GameObject:
   m_ObjectHideFlags: 0
@@ -373,6 +387,10 @@ PrefabInstance:
     - target: {fileID: 8539992380678999146, guid: dd5f57389804e6d4686427832392d85a, type: 3}
       propertyPath: m_Name
       value: SugarParticle
+      objectReference: {fileID: 0}
+    - target: {fileID: 8539992380678999146, guid: dd5f57389804e6d4686427832392d85a, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8539992380678999150, guid: dd5f57389804e6d4686427832392d85a, type: 3}
       propertyPath: m_RootOrder
