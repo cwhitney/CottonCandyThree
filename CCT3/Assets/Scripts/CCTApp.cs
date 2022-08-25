@@ -49,7 +49,13 @@ public class CCTApp : MonoBehaviour
 	void Update() {
 
 		while(mSerial.LinesAvailable > 0) {
-			Debug.Log("Received serial message: "+ mSerial.ReadLine() );
+			string serialMsg = mSerial.ReadLine();
+			Debug.Log("Message from Arduino: " + serialMsg);
+			if(serialMsg == "g") {
+				StartPressed();
+			}else if(serialMsg == "s") {
+				StopPressed();
+			}
 		}
 
 		//mSugarSystem.SetWind(new Vector3(Mathf.Sin(Time.fixedTime * 0.5f) * maxWindSpeedHorz, maxWindSpeedVert, 0.0f));	// max wind speed 20.0
