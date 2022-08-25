@@ -57,7 +57,6 @@ namespace sharkbox {
 		}
 
 		public void Stop() {
-			Debug.Log("SerialManager Close");
 			threadIsActive = false;
 			//	deviceThread.Join();
 			mSerialEnqueueThread.Join();
@@ -97,8 +96,6 @@ namespace sharkbox {
 			foreach (string p in ports) {
 				string[] portDesc = p.Trim().Split(',');
 
-				Debug.Log("port descriptions and shit???");
-
 				portList.Add(new PortInfo(portDesc[0], portDesc[1]));
 			}
 
@@ -106,8 +103,6 @@ namespace sharkbox {
 		}
 
 		public void Connect(string port, int baudRate = DEFAULT_BAUD_RATE) {
-
-			Debug.Log("Connect called");
 
 			if (serial.IsOpen) {
 				serial.Close();

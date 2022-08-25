@@ -58,7 +58,7 @@ public class AudioManager : MonoBehaviour
 	private ArrayList soundList;
 
 	// Start is called before the first frame update
-	void Start() {
+	void Awake() {
 		soundList = new ArrayList();
 
 		foreach (AudioClip a in audioList) {
@@ -70,7 +70,6 @@ public class AudioManager : MonoBehaviour
 		Debug.Log("Clips loaded");
 	}
 
-	// Update is called once per frame
 	public void Play(string name, bool crossfade = false, bool loop = false) {
 		foreach(SoundClip s in soundList) {
 			if(s.GetName() == name) {

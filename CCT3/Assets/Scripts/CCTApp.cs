@@ -7,8 +7,8 @@ public class CCTApp : MonoBehaviour
 {
 	public AudioManager mAudioManager;
 	public InputManager mInputManager;
+	public OscManager mOsc;
 
-	OscManager mOsc;
 	SugarSystem mSugarSystem = new SugarSystem();
 	SerialManager mSerial = new sharkbox.SerialManager();
 
@@ -21,6 +21,7 @@ public class CCTApp : MonoBehaviour
 		UpdateSettings();
 
 		mSugarSystem.Setup();
+		mOsc.Open();
 
 		mInputManager.OnChangeDir += OnStirChangeDir;
 		mInputManager.OnWindSpeedChanged += OnWindSpeedUpdate;
@@ -59,7 +60,6 @@ public class CCTApp : MonoBehaviour
 		}
 
 		//mSugarSystem.SetWind(new Vector3(Mathf.Sin(Time.fixedTime * 0.5f) * maxWindSpeedHorz, maxWindSpeedVert, 0.0f));	// max wind speed 20.0
-		//mSugarSystem.SetWind(new Vector3(0, 2.29f, 0.0f));	// max wind speed 20.0
 		mSugarSystem.Update();
 
 		if (Input.GetKeyDown(KeyCode.G)) {
@@ -67,7 +67,6 @@ public class CCTApp : MonoBehaviour
 			StartPressed();
 		} else if (Input.GetKeyDown(KeyCode.S)) {
 			Debug.Log("Stop spawning");
-
 			StopPressed();
 		} else if (Input.GetKeyDown(KeyCode.D)) {
 			if (Config.Instance.isActive) {
@@ -85,13 +84,17 @@ public class CCTApp : MonoBehaviour
 		maxWindSpeedHorz = Config.Instance.maxWindX;
 		maxWindSpeedVert = Config.Instance.windY;
 		mInputManager.windChangeAmount = Config.Instance.stirInertia;
+		mOsc.host = Config.Instance.oscClient;
+		mOsc.port = Config.Instance.oscPort;
 	}
 
 	void StartPressed() {
 		mSugarSystem.StartSpawningRamp();
+		mOsc.SendStart();
 	}
 
 	void StopPressed() {
 		mSugarSystem.StopSpawning();
+		mOsc.SendStop();
 	}
 }
