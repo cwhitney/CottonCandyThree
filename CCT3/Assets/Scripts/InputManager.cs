@@ -12,7 +12,7 @@ public class InputManager : MonoBehaviour
 	public delegate void changeWindDelegate(float speed);
 	public changeWindDelegate OnWindSpeedChanged;
 
-	public float windChangeAmount = 0.04f;
+	public float windChangeAmount = 0.75f;
 
 	CircularBuffer<float> mAngleBuffer;
 	bool bIsCW = true;

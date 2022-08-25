@@ -8,8 +8,8 @@ public class SugarSystem : MonoBehaviour
 
 	public int mNumToSpawn = 0;
 
-	public const int MAX_PARTICLES = 5000;
-	public const int INITIAL_PARTICLES = 80;
+	public int MAX_PARTICLES = 5000;
+	public int INITIAL_PARTICLES = 80;
 	public const float STIR_SPAWN_SPEED = 0.1f;
 
 	AudioManager mAudioManager;
