@@ -20,6 +20,8 @@ public class CCTApp : MonoBehaviour
 
 	// Start is called before the first frame update
 	void Start() {
+		Screen.fullScreen = true;
+
 		Config.Instance.Load();
 		UpdateSettings();
 
