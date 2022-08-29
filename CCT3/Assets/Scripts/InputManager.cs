@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.Events;
 using CircularBuffer;
 
@@ -12,7 +13,10 @@ public class InputManager : MonoBehaviour
 	public delegate void changeWindDelegate(float speed);
 	public changeWindDelegate OnWindSpeedChanged;
 
+	public bool showDebugMouse = false;
+
 	public float windChangeAmount = 0.75f;
+	public UnityEngine.UI.RawImage mouseDebugImg;
 
 	CircularBuffer<float> mAngleBuffer;
 	bool bIsCW = true;
@@ -21,40 +25,43 @@ public class InputManager : MonoBehaviour
 	float mWindX = 0.0f;
 	float mCircularDirection = 0f;
 	float mPitchBend = 0.0f;
+	Vector2 mp = new Vector2();
 
 	// Start is called before the first frame update
 	void Start() {
-		Cursor.lockState = CursorLockMode.Confined;
-
 		mAngleBuffer = new CircularBuffer<float>(300);
 	}
 
 	// Update is called once per frame
 	void Update() {
-		Vector3 mp = Input.mousePosition;
 		Resolution res = UnityEngine.Screen.currentResolution;
 		float w = Screen.width;
 		float h = Screen.height;
-		//Debug.Log(mp);
 
-		//Press the space bar to apply no locking to the Cursor
-		if (Input.GetKey(KeyCode.Space)) {
-			if (Cursor.lockState == CursorLockMode.None) {
-				Cursor.lockState = CursorLockMode.Confined;
+		if (Input.touchCount > 0 || Input.GetMouseButton(0)) {
+			if(Input.touchCount > 0) {
+				Touch t = Input.GetTouch(0);
+				mp.Set(t.position.x, t.position.y);
 			} else {
-				Cursor.lockState = CursorLockMode.None;
+				mp.Set(Input.mousePosition.x, Input.mousePosition.y);
 			}
-		}
 
-		if (Input.touchCount > 0) {
-			Touch t = Input.GetTouch(0);
-			
-			float angleRads = Mathf.Atan2(t.position.y - h*0.5f, t.position.x - w*0.5f);
+			if (showDebugMouse) {
+				mouseDebugImg.enabled = true;
+				mouseDebugImg.transform.position = new Vector3(mp.x, mp.y, 0);
+			} else {
+				mouseDebugImg.enabled = false;
+				//mouseDebugImg.transform.position = new Vector3(-9999f, -9999f, 0);
+			}
+
+			float angleRads = Mathf.Atan2(mp.y - h*0.5f, mp.x - w*0.5f);
 			float ang = 180f / 3.1415926f * angleRads;
 			if (ang < 0) { ang += 360; }
 
 			mAngleBuffer.PushBack( ang );
 			CalculateDirection();
+		} else {
+			mouseDebugImg.enabled = false;
 		}
 
 		mWindX *= 0.999f;
@@ -96,50 +103,26 @@ public class InputManager : MonoBehaviour
 
 			if (confidence > mStirConfidenceThresh) {
 				if (!bIsCW) {
-					//mPitchBend = 0.0;
 					OnChangeDir?.Invoke(1);
 				} else {
 					mPitchBend = Mathf.Clamp01(mPitchBend + 0.02f);
-					mWindX = Mathf.Clamp(mWindX + windChangeAmount * Time.deltaTime, -1.0f, 1.0f);     // wind x
+					mWindX = Mathf.Clamp(mWindX - windChangeAmount * Time.deltaTime, -1.0f, 1.0f);     // wind x
 				}
 				bIsCW = true;
-			} else {
-				//mPitchBend *= 0.93;
-				//mWindX *= 0.999f;
 			}
-
-			//OnWindSpeedChanged?.Invoke(mWindX);
 		} else if (mCircularDirection < 0.0) {
 			confidence = (float)angleMovedNeg / (float)numSamples;
 
 			if (confidence > mStirConfidenceThresh) {
 				if (bIsCW) {
-					//mPitchBend = 0.0;
-					//signalChangeDir.emit(-1);
 					OnChangeDir?.Invoke(-1);
 				} else {
-					//mPitchBend = math<float>::clamp(mPitchBend + 0.02);
-					mWindX = Mathf.Clamp(mWindX - windChangeAmount * Time.deltaTime, -1.0f, 1.0f);     // wind x
+					mWindX = Mathf.Clamp(mWindX + windChangeAmount * Time.deltaTime, -1.0f, 1.0f);     // wind x
 				}
 				bIsCW = false;
-			} else {
-				//mPitchBend *= 0.93;
-				//mWindX *= 0.999f;
 			}
-
-			//OnWindSpeedChanged?.Invoke(mWindX);
 		}
 
-		//if (mPitchBend < 0.001) {
-		//	mPitchBend = 0.0;
-		//}
-
-		//if (bIsCW) {
-		//	signalWandSpeedDir.emit(mPitchBend);
-		//} else {
-		//	signalWandSpeedDir.emit(-mPitchBend);
-		//}
-		
-		return 0;
+		return (bIsCW == true) ? -1 : 1;
 	}
 }

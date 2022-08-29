@@ -84,6 +84,7 @@ public class CCTApp : MonoBehaviour
 		maxWindSpeedHorz = Config.Instance.maxWindX;
 		maxWindSpeedVert = Config.Instance.windY;
 		mInputManager.windChangeAmount = Config.Instance.stirInertia;
+		mInputManager.showDebugMouse = Config.Instance.useMouseDebug;
 		mOsc.host = Config.Instance.oscClient;
 		mOsc.port = Config.Instance.oscPort;
 	}

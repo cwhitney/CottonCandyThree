@@ -14,6 +14,7 @@ public class Config : MonoBehaviour
 	public int oscPort = 8000;
 	public int ambientParticleCount = 80;
 	public int maxParticles = 5000;
+	public bool useMouseDebug = false;
 
 	public bool isActive = false;
 
@@ -49,6 +50,7 @@ public class Config : MonoBehaviour
 		oscPort = int.Parse(mGui.transform.Find("oscPort").gameObject.GetComponent<TMP_InputField>().text);
 		ambientParticleCount = int.Parse(mGui.transform.Find("ambientParticleCount").gameObject.GetComponent<TMP_InputField>().text);
 		maxParticles = int.Parse(mGui.transform.Find("maxParticles").gameObject.GetComponent<TMP_InputField>().text);
+		useMouseDebug = mGui.transform.Find("useMouseDebug").gameObject.GetComponent<Toggle>().isOn;
 
 		PlayerPrefs.SetFloat("maxWindX", maxWindX);
 		PlayerPrefs.SetFloat("windY", windY);
@@ -57,6 +59,7 @@ public class Config : MonoBehaviour
 		PlayerPrefs.SetInt("oscPort", oscPort);
 		PlayerPrefs.SetInt("ambientParticleCount", ambientParticleCount);
 		PlayerPrefs.SetInt("maxParticles", maxParticles);
+		PlayerPrefs.SetInt("useMouseDebug", useMouseDebug ? 1 : 0);
 
 		PlayerPrefs.Save();
 	}
@@ -69,6 +72,7 @@ public class Config : MonoBehaviour
 		oscPort = PlayerPrefs.GetInt("oscPort");
 		ambientParticleCount = PlayerPrefs.GetInt("ambientParticleCount");
 		maxParticles = PlayerPrefs.GetInt("maxParticles");
+		useMouseDebug = PlayerPrefs.GetInt("useMouseDebug") == 1;
 	}
 
 	public void Show() {
@@ -82,8 +86,7 @@ public class Config : MonoBehaviour
 		mGui.transform.Find("oscPort").gameObject.GetComponent<TMP_InputField>().text = oscPort.ToString();
 		mGui.transform.Find("ambientParticleCount").gameObject.GetComponent<TMP_InputField>().text = ambientParticleCount.ToString();
 		mGui.transform.Find("maxParticles").gameObject.GetComponent<TMP_InputField>().text = maxParticles.ToString();
-
-		//transform.FindDeepChild("RollerDiameter").gameObject.GetComponent<InputField>().text = Model.Instance.rollerDiameterMM.ToString("#.00");
+		mGui.transform.Find("useMouseDebug").gameObject.GetComponent<Toggle>().isOn = useMouseDebug;
 	}
 
 	public void Hide() {
@@ -92,6 +95,4 @@ public class Config : MonoBehaviour
 		mGui.SetActive(false);
 		isActive = false;
 	}
-
-
 }
