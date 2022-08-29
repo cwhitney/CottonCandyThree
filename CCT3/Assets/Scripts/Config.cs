@@ -65,14 +65,14 @@ public class Config : MonoBehaviour
 	}
 
 	public void Load() {
-		maxWindX = PlayerPrefs.GetFloat("maxWindX");
-		windY = PlayerPrefs.GetFloat("windY");
-		stirInertia = PlayerPrefs.GetFloat("stirInertia");
-		oscClient = PlayerPrefs.GetString("oscClient");
-		oscPort = PlayerPrefs.GetInt("oscPort");
-		ambientParticleCount = PlayerPrefs.GetInt("ambientParticleCount");
-		maxParticles = PlayerPrefs.GetInt("maxParticles");
-		useMouseDebug = PlayerPrefs.GetInt("useMouseDebug") == 1;
+		maxWindX = PlayerPrefs.GetFloat("maxWindX", 20.0f);
+		windY = PlayerPrefs.GetFloat("windY", 2.29f);
+		stirInertia = PlayerPrefs.GetFloat("stirInertia", 0.7f);
+		oscClient = PlayerPrefs.GetString("oscClient", "127.0.0.1");
+		oscPort = PlayerPrefs.GetInt("oscPort", 8000);
+		ambientParticleCount = PlayerPrefs.GetInt("ambientParticleCount", 80);
+		maxParticles = PlayerPrefs.GetInt("maxParticles", 5000);
+		useMouseDebug = PlayerPrefs.GetInt("useMouseDebug", 1) == 1;
 	}
 
 	public void Show() {
