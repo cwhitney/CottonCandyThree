@@ -28,6 +28,10 @@ public class InputManager : MonoBehaviour
 	Vector2 mp = new Vector2();
 
 	// Start is called before the first frame update
+	private void Awake() {
+		mouseDebugImg.enabled = false;
+	}
+
 	void Start() {
 		mAngleBuffer = new CircularBuffer<float>(300);
 	}
@@ -60,8 +64,6 @@ public class InputManager : MonoBehaviour
 
 			mAngleBuffer.PushBack( ang );
 			CalculateDirection();
-		} else {
-			mouseDebugImg.enabled = false;
 		}
 
 		mWindX *= 0.999f;

@@ -15,6 +15,9 @@ public class CCTApp : MonoBehaviour
 	public float maxWindSpeedHorz = 20.0f;
 	public float maxWindSpeedVert = 2.29f;
 
+	private IEnumerator songCoroutine;
+
+
 	// Start is called before the first frame update
 	void Start() {
 		Config.Instance.Load();
@@ -35,6 +38,8 @@ public class CCTApp : MonoBehaviour
 				mSerial.Connect(p.Name, 9600);
 			}
 		}
+
+		//Application.targetFrameRate = 120;
 	}
 
 	void OnStirChangeDir(int dir) {
@@ -75,6 +80,8 @@ public class CCTApp : MonoBehaviour
 			} else {
 				Config.Instance.Show();
 			}
+		} else if (Input.GetKeyDown(KeyCode.F)) {
+			Screen.fullScreen = !Screen.fullScreen;
 		}
 	}
 
@@ -90,12 +97,29 @@ public class CCTApp : MonoBehaviour
 	}
 
 	void StartPressed() {
+		Debug.Log("Start Pressed called");
+
 		mSugarSystem.StartSpawningRamp();
 		mOsc.SendStart();
+
+		songCoroutine = SongTimeout(45.45f);
+		StartCoroutine(songCoroutine);
+	}
+
+	private IEnumerator SongTimeout(float secs) {
+		while (true) {
+			yield return new WaitForSeconds(secs);
+			StopPressed();
+		}
 	}
 
 	void StopPressed() {
+		Debug.Log("Stop Pressed called");
 		mSugarSystem.StopSpawning();
 		mOsc.SendStop();
+
+		if (songCoroutine != null) {
+			StopCoroutine(songCoroutine);
+		}
 	}
 }

@@ -46,7 +46,7 @@ public class SugarParticle : MonoBehaviour {
 		velocity = accel;
 
 		bPersistent = isPersistent;
-		rotationalVel = Random.Range(-0.007f, 0.007f);
+		rotationalVel = Random.Range(-0.7f, 0.7f);
 
 		if (bPersistent) {
 			pos = new Vector3(Random.Range(minX, maxX), Random.Range(minY, maxY), 0f);
@@ -100,13 +100,11 @@ public class SugarParticle : MonoBehaviour {
 		}
 
 
-		//Debug.Log("Velocity" + velocity);
-
 		accel = wind / mass;
-		pos += velocity + accel;
+		pos += (velocity + accel) * 100.0f * Time.deltaTime;
 		velocity *= (1.0f - Time.deltaTime);
 		//velocity *= 0.97f * Time.deltaTime;
-		rotation += rotationalVel;
+		rotation += rotationalVel * Time.deltaTime;
 
 		
 

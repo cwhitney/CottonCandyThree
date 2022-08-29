@@ -10,13 +10,12 @@ public class SugarSystem : MonoBehaviour
 
 	public int MAX_PARTICLES = 5000;
 	public int INITIAL_PARTICLES = 80;
-	public const float STIR_SPAWN_SPEED = 0.1f;
+	public const float STIR_SPAWN_SPEED = 0.3f;
 
 	AudioManager mAudioManager;
 
 	float mRampStartTime = 0.0f;
 	bool bRampingUp = false;
-	bool bExplodeOnly = false;
 	float mSpawnEvery = 0.0f;
 	float mSpawnNext = 0.0f;
 
@@ -45,7 +44,8 @@ public class SugarSystem : MonoBehaviour
 			float norm = Mathf.Clamp((float)elapsed / 30.0f, 0f, 1f);
 			float normE = Mathf.Pow(norm, 0.3f);
 			//        console() << "Ramp :: " << (normE * mRampMax) << " / " << norm * 100.0 << endl;
-			mSpawnEvery = lmap(normE, 0.0f, 1.0f, STIR_SPAWN_SPEED, 0.03f);
+			mSpawnEvery = lmap(normE, 0.0f, 1.0f, STIR_SPAWN_SPEED, 0.02f);
+			//mSpawnEvery = 0.01f;
 		}
 
 		// Update Live Particles
@@ -74,7 +74,6 @@ public class SugarSystem : MonoBehaviour
 	public void StartSpawningRamp() {
 		mRampStartTime = Time.fixedTime;
 		bRampingUp = true;
-		bExplodeOnly = false;
 
 		mAudioManager.Play("CCT_song", true);
 		mAudioManager.Stop("CCT_idle", true);
@@ -84,7 +83,6 @@ public class SugarSystem : MonoBehaviour
 		mSpawnEvery = 0.0f;
 		mSpawnNext = 0.0f;
 		bRampingUp = false;
-		bExplodeOnly = true;
 
 		float elapsed = Time.fixedTime - mRampStartTime;
 		if (elapsed < 40.0) {   // play the ending sting, then go back to idle
