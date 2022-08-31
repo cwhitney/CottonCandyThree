@@ -16,7 +16,7 @@ public class CCTApp : MonoBehaviour
 	public float maxWindSpeedVert = 2.29f;
 
 	private IEnumerator songCoroutine;
-
+	private int mLastQuadrant = -1;
 
 	// Start is called before the first frame update
 	void Start() {
@@ -33,15 +33,13 @@ public class CCTApp : MonoBehaviour
 
 		List<PortInfo> portList  = mSerial.GetPortsDetail(); ;
 		foreach( PortInfo p in portList) {
-			Debug.Log(p.Name + " / " + p.Description);
+			Debug.Log(p.Name + " / " + p.Description); 
 
 			if(p.Description.Contains("Arduino")) {
 				Debug.Log("Found the arduino");
 				mSerial.Connect(p.Name, 9600);
 			}
 		}
-
-		//Application.targetFrameRate = 120;
 	}
 
 	void OnStirChangeDir(int dir) {
@@ -68,6 +66,21 @@ public class CCTApp : MonoBehaviour
 
 		//mSugarSystem.SetWind(new Vector3(Mathf.Sin(Time.fixedTime * 0.5f) * maxWindSpeedHorz, maxWindSpeedVert, 0.0f));	// max wind speed 20.0
 		mSugarSystem.Update();
+
+		float curAngle = mInputManager.GetAngle();
+		float numTones = 8.0f;
+
+		if (mLastQuadrant == -1.0) {
+			mLastQuadrant = (int)Mathf.Floor(curAngle / (360f / numTones));
+		} else {
+			int mCurQuadrant = (int)Mathf.Floor(curAngle / (360f / numTones));
+
+			if(mCurQuadrant != mLastQuadrant) {
+				mAudioManager.PlayShepardTone(mCurQuadrant);
+			}
+
+			mLastQuadrant = mCurQuadrant;
+		}
 
 		if (Input.GetKeyDown(KeyCode.G)) {
 			Debug.Log("Start spawning");

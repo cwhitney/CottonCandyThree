@@ -54,18 +54,28 @@ public class SoundClip {
 public class AudioManager : MonoBehaviour
 {
 	public AudioClip[] audioList;
+	public AudioClip[] shepardTones;
 
 	private ArrayList soundList;
+	private ArrayList shepardSoundList;
 
 	// Start is called before the first frame update
 	void Awake() {
 		soundList = new ArrayList();
+		shepardSoundList = new ArrayList();
 
 		foreach (AudioClip a in audioList) {
 			AudioSource asrc = gameObject.AddComponent<AudioSource>();
 			asrc.clip = a;
 
 			soundList.Add( new SoundClip(asrc) );
+		}
+
+		foreach (AudioClip a in shepardTones) {
+			AudioSource asrc = gameObject.AddComponent<AudioSource>();
+			asrc.clip = a;
+
+			shepardSoundList.Add(new SoundClip(asrc));
 		}
 		Debug.Log("Clips loaded");
 	}
@@ -79,6 +89,11 @@ public class AudioManager : MonoBehaviour
 				}
 			}
 		}
+	}
+
+	public void PlayShepardTone(int toneNum) {
+		SoundClip s = shepardSoundList[toneNum] as SoundClip;
+		s.Play();
 	}
 
 	public void Stop(string name, bool crossfade = false) {

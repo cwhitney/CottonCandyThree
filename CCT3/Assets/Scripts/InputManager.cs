@@ -34,6 +34,11 @@ public class InputManager : MonoBehaviour
 
 	void Start() {
 		mAngleBuffer = new CircularBuffer<float>(300);
+		mAngleBuffer.PushBack(0f);
+	}
+
+	public float GetAngle() {
+		return mAngleBuffer.Back();
 	}
 
 	// Update is called once per frame

@@ -3539,6 +3539,15 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 7f14b15784440d74ab4f43685702f347, type: 3}
   - {fileID: 8300000, guid: c84c6102f46c56641bddd7a382f9ac94, type: 3}
   - {fileID: 8300000, guid: 76678d17950603245ba76663c6c53b63, type: 3}
+  shepardTones:
+  - {fileID: 8300000, guid: abf7c7188f218484087262f0157c9631, type: 3}
+  - {fileID: 8300000, guid: 8686773d74fde454d8cd5a5719925140, type: 3}
+  - {fileID: 8300000, guid: 4c72ad200eeb7b8439dd4a938b9a7638, type: 3}
+  - {fileID: 8300000, guid: 4b13954f13da8ba4580d5ec61137f98e, type: 3}
+  - {fileID: 8300000, guid: e2481416dd11e2f47883a4ba028b1483, type: 3}
+  - {fileID: 8300000, guid: 47e07adc827ca6e47a277e656d842fa9, type: 3}
+  - {fileID: 8300000, guid: 295ee7f225bb87146af016270bc7c428, type: 3}
+  - {fileID: 8300000, guid: d85c734eddf0d134783620626670f8d3, type: 3}
 --- !u!4 &1227293388
 Transform:
   m_ObjectHideFlags: 0
