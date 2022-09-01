@@ -17,6 +17,8 @@ public class SoundClip {
 
 	public void Play(bool loop=false, float seek=0.0f) {
 		Debug.Log("Playing audio "+name);
+		source.Stop();
+		source.volume = 1.0f;
 		source.loop = loop;
 		source.time = seek;
 		source.Play();
