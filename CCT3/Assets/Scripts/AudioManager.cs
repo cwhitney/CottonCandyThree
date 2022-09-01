@@ -15,9 +15,10 @@ public class SoundClip {
 		name = s.clip.name;
 	}
 
-	public void Play(bool loop=false) {
+	public void Play(bool loop=false, float seek=0.0f) {
 		Debug.Log("Playing audio "+name);
 		source.loop = loop;
+		source.time = seek;
 		source.Play();
 	}
 
@@ -80,10 +81,10 @@ public class AudioManager : MonoBehaviour
 		Debug.Log("Clips loaded");
 	}
 
-	public void Play(string name, bool crossfade = false, bool loop = false) {
+	public void Play(string name, bool crossfade=false, bool loop=false, float seek=0.0f) {
 		foreach(SoundClip s in soundList) {
 			if(s.GetName() == name) {
-				s.Play(loop);
+				s.Play(loop, seek);
 				if (crossfade) {
 					StartCoroutine(s.Crossfade(0.0f, 1.0f, 1.0f));
 				}

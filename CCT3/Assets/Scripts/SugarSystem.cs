@@ -75,7 +75,7 @@ public class SugarSystem : MonoBehaviour
 		mRampStartTime = Time.fixedTime;
 		bRampingUp = true;
 
-		mAudioManager.Play("CCT_song", true);
+		mAudioManager.Play("CCT_song", false, false, 4.5f);
 		mAudioManager.Stop("CCT_idle", true);
 	}
 
